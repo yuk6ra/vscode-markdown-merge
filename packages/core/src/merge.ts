@@ -104,12 +104,20 @@ export async function merge(options: MergeOptions): Promise<string> {
   } = options;
 
   const resolvedInputDir = path.resolve(inputDir);
-  const outputDir = outputPath
-    ? path.dirname(path.resolve(outputPath))
+  const resolvedOutput = outputPath ? path.resolve(outputPath) : undefined;
+  const outputDir = resolvedOutput
+    ? path.dirname(resolvedOutput)
     : resolvedInputDir;
 
+  // Auto-ignore the output file if it falls inside inputDir
+  const effectiveIgnore = [...ignore];
+  if (resolvedOutput && resolvedOutput.startsWith(resolvedInputDir + path.sep)) {
+    const outputRelative = path.relative(resolvedInputDir, resolvedOutput);
+    effectiveIgnore.push(outputRelative);
+  }
+
   // Discover and order files
-  const files = await discover(resolvedInputDir, recursive, ignore);
+  const files = await discover(resolvedInputDir, recursive, effectiveIgnore);
   if (files.length === 0) {
     throw new Error(`No .md files found in ${resolvedInputDir}`);
   }
@@ -196,8 +204,7 @@ export async function merge(options: MergeOptions): Promise<string> {
   result += sections.join(separator);
 
   // Write to file if outputPath specified
-  if (outputPath) {
-    const resolvedOutput = path.resolve(outputPath);
+  if (resolvedOutput) {
     await fs.mkdir(path.dirname(resolvedOutput), { recursive: true });
     await fs.writeFile(resolvedOutput, result, "utf-8");
   }

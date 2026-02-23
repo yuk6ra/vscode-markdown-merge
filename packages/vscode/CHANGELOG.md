@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0] - 2026-02-24
+
+### Added
+- Auto-ignore output file to prevent self-inclusion when merging
+- "Why Markdown Merge?" motivation section in README
+- Hokkaido Trip sample data
+- Extension icon
+
+### Fixed
+- Merged file no longer includes itself when output is inside input directory
+
 ## [0.3.0] - 2026-02-24
 
 ### Added
