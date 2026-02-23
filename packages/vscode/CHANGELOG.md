@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0] - 2026-02-24
+
+### Added
+- Heading hierarchy: subdirectory structure automatically maps to heading levels (H1 → H2 → H3)
+- Nested table of contents reflecting directory depth
+- Directory section headings inserted automatically for subdirectories
+- New examples in README (Smart Watch Manual, Hokkaido Trip)
+- Mermaid diagrams in README
+
+### Changed
+- Improved README with clearer documentation and real-world examples
+- Updated VSCode Marketplace README with heading hierarchy example
+
 ## [0.2.0] - 2026-02-24
 
 ### Added

@@ -1,5 +1,7 @@
 # Markdown Merge
 
+![Markdown Merge](packages/vscode/main.png)
+
 Merge multiple Markdown files from a directory into a single document with auto-generated table of contents and relative path correction.
 
 ## Features

@@ -147,22 +147,18 @@ npm publish --workspace=packages/cli --access public
 
 ### 4. Publish VSCode Extension
 
-Requires [vsce](https://github.com/microsoft/vscode-vsce):
-
-```bash
-npm install -g @vscode/vsce
-```
-
-Build and publish:
+Build and publish (using `npx` — no global install needed):
 
 ```bash
 npm run build --workspaces
 cd packages/vscode
-vsce package        # Creates .vsix file for local testing
-vsce publish        # Publish to VS Code Marketplace
+npx @vscode/vsce package --no-dependencies    # Creates .vsix file for local testing
+npx @vscode/vsce publish --no-dependencies    # Publish to VS Code Marketplace
 ```
 
-> **Note:** `vsce publish` requires a Personal Access Token (PAT) from [Azure DevOps](https://dev.azure.com/). Run `vsce login yuk6ra` first to set up credentials.
+> **Note:** `--no-dependencies` is required because npm workspaces create symlinks that cause vsce to include the entire monorepo.
+
+> **Note:** Publishing requires a Personal Access Token (PAT) from [Azure DevOps](https://dev.azure.com/) with **Marketplace > Manage** scope. Run `npx @vscode/vsce login yuk6ra` first to set up credentials.
 
 ### 5. Create a Git Tag
 

@@ -1,6 +1,16 @@
 # Markdown Merge
 
+![Markdown Merge](https://raw.githubusercontent.com/yuk6ra/vscode-markdown-merge/master/packages/vscode/main.png)
+
 Merge all Markdown files in a folder into a single document -- right from the Explorer context menu.
+
+## Why Markdown Merge?
+
+In AI-driven development, splitting documentation into small, focused Markdown files makes it easy for AI tools to process. But for humans -- clients, teammates, or your future self -- a single consolidated document is far easier to read and share.
+
+Markdown Merge bridges that gap: keep your files modular for AI workflows, then merge them into one polished document whenever you need it.
+
+If you find anything awkward or have ideas, just [open an issue](https://github.com/yuk6ra/vscode-markdown-merge/issues) -- even a title-only issue helps. Let's figure out AI-native Markdown together.
 
 ## How to Use
 
