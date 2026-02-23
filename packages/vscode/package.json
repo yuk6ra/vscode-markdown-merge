@@ -1,0 +1,41 @@
+{
+  "name": "mdmerge-vscode",
+  "displayName": "Markdown Merge",
+  "description": "Merge multiple Markdown files into a single document with TOC and path correction",
+  "version": "0.1.0",
+  "publisher": "yuk6ra",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "mdmerge.mergeFolder",
+        "title": "Merge All Markdown"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "mdmerge.mergeFolder",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node"
+  },
+  "dependencies": {
+    "@mdmerge/core": "*"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.4.0"
+  }
+}
