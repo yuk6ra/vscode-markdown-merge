@@ -2,14 +2,28 @@
   "name": "mdmerge-vscode",
   "displayName": "Markdown Merge",
   "description": "Merge multiple Markdown files into a single document with TOC and path correction",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "yuk6ra",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yuk6ra/vscode-markdown-merge",
+    "directory": "packages/vscode"
+  },
+  "homepage": "https://github.com/yuk6ra/vscode-markdown-merge",
+  "bugs": {
+    "url": "https://github.com/yuk6ra/vscode-markdown-merge/issues"
+  },
+  "keywords": ["markdown", "merge", "combine", "toc", "documentation"],
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Other"],
+  "categories": ["Other", "Formatters"],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
   "main": "./out/extension.js",
-  "activationEvents": [],
   "contributes": {
     "commands": [
       {

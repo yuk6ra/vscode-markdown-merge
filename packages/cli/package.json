@@ -1,7 +1,20 @@
 {
   "name": "mdmerge",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "CLI tool to merge multiple Markdown files into a single document",
   "type": "module",
+  "license": "MIT",
+  "author": "yuk6ra",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yuk6ra/vscode-markdown-merge",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/yuk6ra/vscode-markdown-merge",
+  "bugs": {
+    "url": "https://github.com/yuk6ra/vscode-markdown-merge/issues"
+  },
+  "keywords": ["markdown", "merge", "combine", "toc", "cli", "documentation"],
   "bin": {
     "mdmerge": "./dist/bin.js"
   },
