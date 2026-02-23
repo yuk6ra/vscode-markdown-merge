@@ -1,6 +1,6 @@
 {
   "name": "mdmerge",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "CLI tool to merge multiple Markdown files into a single document",
   "type": "module",
   "license": "MIT",
