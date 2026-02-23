@@ -1,0 +1,10 @@
+{
+  "order": [
+    "intro.md",
+    "settings/wifi.md",
+    "settings/bluetooth.md",
+    "functions/health-check.md",
+    "functions/notifications.md",
+    "troubleshooting.md"
+  ]
+}

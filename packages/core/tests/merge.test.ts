@@ -31,6 +31,10 @@ describe("merge", () => {
 
     // Should have separators
     expect(result).toContain("---");
+
+    // Subdirectory should produce a directory heading
+    expect(result).toContain("# Materials");
+    expect(result).toContain('<a id="materials"></a>');
   });
 
   it("merges without TOC when toc=false", async () => {
@@ -82,10 +86,114 @@ describe("merge", () => {
       toc: false,
     });
 
-    // All # should become ##
+    // All # should become ## (flat dir, depth 0 + offset 1)
     expect(result).toContain("## Alpha");
     expect(result).toContain("## Beta");
     expect(result).toContain("## Gamma");
     expect(result).not.toMatch(/^# Alpha/m);
+  });
+});
+
+describe("depth-based heading offset", () => {
+  it("applies depth-based offset to nested files", async () => {
+    const result = await merge({
+      inputDir: path.join(FIXTURES, "nested"),
+      toc: false,
+    });
+
+    // Root-level file: depth 0 → H1 unchanged
+    expect(result).toMatch(/^# Introduction$/m);
+
+    // Depth-1 file: H1 becomes H2
+    expect(result).toMatch(/^## Overview$/m);
+    expect(result).toMatch(/^## Summary$/m);
+
+    // Depth-2 file: H1 becomes H3
+    expect(result).toMatch(/^### Specification$/m);
+
+    // H2 in depth-2 file becomes H4
+    expect(result).toMatch(/^#### Requirements$/m);
+  });
+
+  it("inserts directory headings at correct levels", async () => {
+    const result = await merge({
+      inputDir: path.join(FIXTURES, "nested"),
+      toc: false,
+    });
+
+    // Depth-0 directories → H1
+    expect(result).toMatch(/^# Chapter 1$/m);
+    expect(result).toMatch(/^# Chapter 2$/m);
+
+    // Depth-1 directory → H2
+    expect(result).toMatch(/^## Details$/m);
+  });
+
+  it("preserves sorted order (alphabetical)", async () => {
+    const result = await merge({
+      inputDir: path.join(FIXTURES, "nested"),
+      toc: false,
+    });
+
+    // Alphabetically: chapter-1/ < chapter-2/ < intro.md
+    const chapter1Pos = result.indexOf("# Chapter 1");
+    const chapter2Pos = result.indexOf("# Chapter 2");
+    const introPos = result.indexOf("# Introduction");
+
+    expect(chapter1Pos).toBeLessThan(chapter2Pos);
+    expect(chapter2Pos).toBeLessThan(introPos);
+  });
+
+  it("combines depth offset with global headingOffset", async () => {
+    const result = await merge({
+      inputDir: path.join(FIXTURES, "nested"),
+      headingOffset: 1,
+      toc: false,
+    });
+
+    // Dir heading: depth 0 + offset 1 = H2
+    expect(result).toMatch(/^## Chapter 1$/m);
+
+    // Depth-1 dir heading: depth 1 + offset 1 = H3
+    expect(result).toMatch(/^### Details$/m);
+
+    // Depth-1 file: depth 1 + offset 1 = H3
+    expect(result).toMatch(/^### Overview$/m);
+
+    // Root file: depth 0 + offset 1 = H2
+    expect(result).toMatch(/^## Introduction$/m);
+    expect(result).not.toMatch(/^# Introduction$/m);
+  });
+
+  it("flat directory has no behavior change", async () => {
+    const result = await merge({
+      inputDir: path.join(FIXTURES, "with-index"),
+      order: "index",
+      toc: false,
+    });
+
+    // All files at root — no depth offset, no directory headings
+    expect(result).toMatch(/^# Gamma$/m);
+    expect(result).toMatch(/^# Alpha$/m);
+    expect(result).toMatch(/^# Beta$/m);
+    expect(result).not.toContain("# With Index");
+  });
+
+  it("generates nested TOC for subdirectories", async () => {
+    const result = await merge({
+      inputDir: path.join(FIXTURES, "nested"),
+      toc: true,
+    });
+
+    // Alphabetical order: chapter-1 first, then chapter-2, then intro
+    expect(result).toContain("1. [Chapter 1]");
+    expect(result).toContain("2. [Chapter 2]");
+    expect(result).toContain("3. [Introduction]");
+
+    // Indented file entries under directories
+    expect(result).toMatch(/[ \t]+1\. \[Details\]/);
+    expect(result).toMatch(/[ \t]+1\. \[Specification\]/);
+    expect(result).toMatch(/[ \t]+2\. \[Overview\]/);
+    expect(result).toMatch(/[ \t]+1\. \[Summary\]/);
   });
 });

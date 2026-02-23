@@ -45,11 +45,27 @@ export function uniqueAnchors(entries: TocEntry[]): TocEntry[] {
 
 /**
  * Generate a Markdown table of contents from TOC entries.
+ * Supports nested indentation when entries have a depth field.
  */
 export function generateToc(entries: TocEntry[]): string {
   const lines = ["# Table of Contents", ""];
-  for (let i = 0; i < entries.length; i++) {
-    lines.push(`${i + 1}. [${entries[i].title}](#${entries[i].anchor})`);
+  const counters: number[] = [];
+
+  for (const entry of entries) {
+    const depth = entry.depth ?? 0;
+
+    // Ensure counters array covers this depth
+    while (counters.length <= depth) {
+      counters.push(0);
+    }
+    // Reset deeper counters when going back up
+    counters.length = depth + 1;
+    counters[depth]++;
+
+    const indent = "   ".repeat(depth);
+    lines.push(
+      `${indent}${counters[depth]}. [${entry.title}](#${entry.anchor})`,
+    );
   }
   return lines.join("\n");
 }

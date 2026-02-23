@@ -39,4 +39,8 @@ export interface TocEntry {
   title: string;
   anchor: string;
   sourceFile: string;
+  /** Nesting depth (0 = top-level). Used for nested TOC indentation. */
+  depth?: number;
+  /** True if this entry represents a directory heading, not a file. */
+  isDirectory?: boolean;
 }

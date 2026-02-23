@@ -16,34 +16,41 @@ Merge all Markdown files in a folder into a single document -- right from the Ex
 ## What It Does
 
 - **Merges** all `.md` files from the selected folder (including subdirectories)
-- **Generates a Table of Contents** with anchor links at the top
+- **Generates a Table of Contents** with nested anchor links
+- **Maps folder structure to heading levels** -- subdirectories become section headings
 - **Fixes relative paths** so images and links still work after merging
 - **Preserves structure** with separators between each file's content
 
-## Custom Ordering with index.json
+## Example
 
-Place an `index.json` in your folder to control the merge order:
+Given this folder:
 
-```json
-{
-  "order": [
-    "introduction.md",
-    "architecture.md",
-    "api-reference.md"
-  ]
-}
+```
+smart-watch-manual/
+├── intro.md
+├── settings/
+│   ├── wifi.md
+│   └── bluetooth.md
+├── functions/
+│   ├── health-check.md
+│   └── notifications.md
+├── troubleshooting.md
+└── index.json
 ```
 
-Then choose the **"index"** strategy when prompted.
-
-## Output Example
+Choosing **"index"** ordering produces:
 
 ```markdown
 # Table of Contents
 
 1. [Introduction](#introduction)
-2. [Architecture](#architecture)
-3. [API Reference](#api-reference)
+2. [Settings](#settings)
+   1. [Wi-Fi Setup](#wi-fi-setup)
+   2. [Bluetooth](#bluetooth)
+3. [Functions](#functions)
+   1. [Health Check](#health-check)
+   2. [Notifications](#notifications)
+4. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -52,9 +59,39 @@ Then choose the **"index"** strategy when prompted.
 
 ---
 
-# Architecture
+# Settings
+
+---
+
+## Wi-Fi Setup
+...
+
+---
+
+## Bluetooth
 ...
 ```
+
+Subdirectories (`settings/`, `functions/`) automatically become section headings, and files inside them are nested one level deeper.
+
+## Custom Ordering with index.json
+
+Place an `index.json` in your folder to control the merge order:
+
+```json
+{
+  "order": [
+    "intro.md",
+    "settings/wifi.md",
+    "settings/bluetooth.md",
+    "functions/health-check.md",
+    "functions/notifications.md",
+    "troubleshooting.md"
+  ]
+}
+```
+
+Then choose the **"index"** strategy when prompted.
 
 ## CLI
 
